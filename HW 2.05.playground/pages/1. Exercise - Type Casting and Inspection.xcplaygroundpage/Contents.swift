@@ -38,6 +38,39 @@ for item in items {
     }
 }
 
+
+//ещё один способ сделать то же самое проще
+for item in items {
+    if item is Int {
+        print("Целое число: \(item)")
+    } else if item is Double {
+        print("Дробное число: \(item)")
+    } else if item is String {
+        print("Строка: \(item)")
+    } else if item is Bool {
+        print("Логическое значение: \(item)")
+    }
+}
+
+
+//и ещё один способ сделать тоже самое тоже проще
+for item in items {
+    switch item {
+    case is Int:
+        print("Целое число: \(item)")
+    case is Double:
+        print("Дробное число: \(item)")
+    case is String:
+        print("Строка: \(item)")
+    case is Bool:
+        print("Логическое значение: \(item)")
+    default:
+        print("Иной тип данных: \(item)")
+    }
+}
+
+
+
 /*:
  1.3 Создайте словарь [String : Any], где все значения — это смесь дробных и целых чисел, строк и булевых значений. Переберите словарь и выведете на консоль пары ключ/значения для всех элементов коллекции.
  */
@@ -57,6 +90,11 @@ let stringsWithAnyItems: [String: Any] = [
 
 for (stringKey, anyValue) in stringsWithAnyItems {
   print("ключ: \(stringKey), значение: \(anyValue)")
+}
+
+//ещё один способ сделать то же самое
+for item in stringsWithAnyItems {
+    print("ключ: \(item.key), значение: \(item.self)")
 }
 
 
@@ -84,6 +122,43 @@ for (stringKey, anyValue) in stringsWithAnyItems {
 
 print(total)
 
+//ещё один способ сделать то же самое
+ 
+var sum = 0.0
+
+for (_, anyValue) in stringsWithAnyItems {
+    if let anyValue = anyValue as? Int {
+        sum += Double(anyValue)
+    } else if let anyValue = anyValue as? Double {
+        sum += anyValue
+    } else if anyValue is String {
+        sum += 1
+    } else if let anyValue = anyValue as? Bool {
+        sum += anyValue ? 2 : -3
+    }
+}
+
+print(sum)
+
+//и еще один способ сделать то же самое
+var result = 0.0
+
+for value in stringsWithAnyItems.values {
+    switch value {
+    case let value as Int:
+        result += Double(value)
+    case let value as Double:
+        result += value
+    case is String:
+        result += 1
+    case let value as Bool:
+        result += value ? 2 : -3
+    default:
+        break
+    }
+}
+
+print(result)
 
 /*:
  1.5 Обнулите переменную total и снова пройдите по всей коллекции, прибавляя к ней все целые и вещественные числа.  Для каждой строки, встретившейся на пути, попробуйте сконвертировать её в число, и добавьте это значение к общему. Игнорируйте булевы значения.  Распечатайте итог.
